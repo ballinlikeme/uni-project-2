@@ -112,153 +112,161 @@ export const AddNewTransactionForm: React.FC = () => {
       borderColor={theme.palette.grey["400"]}
       borderRadius="8px"
     >
-      <Stack gap={3}>
-        <Tabs
-          value={tabValue}
-          onChange={handleTabChange}
-          sx={{ width: "100%" }}
-        >
-          <Tab
-            sx={{ width: "50%" }}
-            label={TransactionType.INCOME}
-            value={TransactionType.INCOME}
-          />
-          <Tab
-            sx={{ width: "50%" }}
-            label={TransactionType.EXPENSE}
-            value={TransactionType.EXPENSE}
-          />
-        </Tabs>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Stack direction="column" gap={2} p={2} pt={0}>
-            <Stack direction="row" gap={1}>
-              <Stack flex="70%">
-                <Controller
-                  control={control}
-                  name="recipient"
-                  render={({ field }) => (
-                    <TextField
-                      {...field}
-                      fullWidth
-                      select
-                      size="small"
-                      label="Account"
-                      defaultValue=""
-                    >
-                      {accounts.map((account) => (
-                        <MenuItem key={account.name} value={account.name}>
-                          <Stack
-                            direction="row"
-                            alignItems="center"
-                            justifyContent="space-between"
-                            width="100%"
-                          >
-                            <Box width="100%">
-                              <Typography>{account.name}</Typography>
-                            </Box>
-                            <Box width="100%" alignSelf="flex-end">
-                              <Typography
-                                fontFamily={JetBrainsFont}
-                                textAlign="right"
-                              >
-                                {account.balance.toFixed(2)} USD
-                              </Typography>
-                            </Box>
-                          </Stack>
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  )}
-                />
-              </Stack>
-              <Stack flex="30%">
-                <TextField
-                  {...register("amount")}
-                  fullWidth
-                  size="small"
-                  label="Amount"
-                  type="number"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <AttachMoneyIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              </Stack>
-            </Stack>
-            <Stack direction="row" gap={1}>
-              <Stack flex="70%">
-                <Controller
-                  name="categories"
-                  control={control}
-                  render={({ field: { onChange, value } }) => (
-                    <Autocomplete
-                      autoComplete
-                      multiple
-                      freeSolo
-                      value={value}
-                      ChipProps={{ size: "small" }}
-                      options={categories.map((category) => category.name)}
-                      sx={{ width: "100%" }}
-                      onChange={(_, data) => {
-                        return customHandleAutoCompleteChange(
-                          _,
-                          data,
-                          onChange
-                        );
-                      }}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          fullWidth
-                          size="small"
-                          label="Categories"
-                        />
-                      )}
-                    />
-                  )}
-                />
-              </Stack>
-              <Stack flex="30%">
-                <LocalizationProvider dateAdapter={AdapterDayjs}>
+      {accounts.length ? (
+        <Stack gap={3}>
+          <Tabs
+            value={tabValue}
+            onChange={handleTabChange}
+            sx={{ width: "100%" }}
+          >
+            <Tab
+              sx={{ width: "50%" }}
+              label={TransactionType.INCOME}
+              value={TransactionType.INCOME}
+            />
+            <Tab
+              sx={{ width: "50%" }}
+              label={TransactionType.EXPENSE}
+              value={TransactionType.EXPENSE}
+            />
+          </Tabs>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Stack direction="column" gap={2} p={2} pt={0}>
+              <Stack direction="row" gap={1}>
+                <Stack flex="70%">
                   <Controller
                     control={control}
-                    name="date"
-                    render={({ field: { onChange, ...rest } }) => (
-                      <DatePicker
-                        {...rest}
+                    name="recipient"
+                    render={({ field }) => (
+                      <TextField
+                        {...field}
+                        fullWidth
+                        select
+                        size="small"
+                        label="Account"
+                        defaultValue=""
+                      >
+                        {accounts.map((account) => (
+                          <MenuItem key={account.name} value={account.name}>
+                            <Stack
+                              direction="row"
+                              alignItems="center"
+                              justifyContent="space-between"
+                              width="100%"
+                            >
+                              <Box width="100%">
+                                <Typography>{account.name}</Typography>
+                              </Box>
+                              <Box width="100%" alignSelf="flex-end">
+                                <Typography
+                                  fontFamily={JetBrainsFont}
+                                  textAlign="right"
+                                >
+                                  {account.balance.toFixed(2)} USD
+                                </Typography>
+                              </Box>
+                            </Stack>
+                          </MenuItem>
+                        ))}
+                      </TextField>
+                    )}
+                  />
+                </Stack>
+                <Stack flex="30%">
+                  <TextField
+                    {...register("amount")}
+                    fullWidth
+                    size="small"
+                    label="Amount"
+                    type="number"
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AttachMoneyIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Stack>
+              </Stack>
+              <Stack direction="row" gap={1}>
+                <Stack flex="70%">
+                  <Controller
+                    name="categories"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                      <Autocomplete
+                        autoComplete
+                        multiple
+                        freeSolo
+                        value={value}
+                        ChipProps={{ size: "small" }}
+                        options={categories.map((category) => category.name)}
                         sx={{ width: "100%" }}
-                        slotProps={{
-                          textField: { size: "small", error: false },
+                        onChange={(_, data) => {
+                          return customHandleAutoCompleteChange(
+                            _,
+                            data,
+                            onChange
+                          );
                         }}
-                        onChange={(val) => {
-                          if (val) {
-                            onChange(String(val));
-                          }
-                          return val;
-                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            fullWidth
+                            size="small"
+                            label="Categories"
+                          />
+                        )}
                       />
                     )}
                   />
-                </LocalizationProvider>
+                </Stack>
+                <Stack flex="30%">
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <Controller
+                      control={control}
+                      name="date"
+                      render={({ field: { onChange, ...rest } }) => (
+                        <DatePicker
+                          {...rest}
+                          sx={{ width: "100%" }}
+                          slotProps={{
+                            textField: { size: "small", error: false },
+                          }}
+                          onChange={(val) => {
+                            if (val) {
+                              onChange(String(val));
+                            }
+                            return val;
+                          }}
+                        />
+                      )}
+                    />
+                  </LocalizationProvider>
+                </Stack>
+              </Stack>
+              <Stack direction="row" gap={1}>
+                <Stack flex="100%">
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{ height: "100%" }}
+                  >
+                    Add Transaction
+                  </Button>
+                </Stack>
               </Stack>
             </Stack>
-            <Stack direction="row" gap={1}>
-              <Stack flex="100%">
-                <Button
-                  type="submit"
-                  variant="contained"
-                  sx={{ height: "100%" }}
-                >
-                  Add Transaction
-                </Button>
-              </Stack>
-            </Stack>
-          </Stack>
-        </form>
-      </Stack>
+          </form>
+        </Stack>
+      ) : (
+        <Stack justifyContent="center" alignItems="center" minHeight="200px">
+          <Typography>
+            You need to register an account to perform transactions!
+          </Typography>
+        </Stack>
+      )}
     </Box>
   );
 };

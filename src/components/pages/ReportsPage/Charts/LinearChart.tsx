@@ -1,3 +1,4 @@
+import { Stack, Typography } from "@mui/material";
 import { useAppSelector } from "lib/store";
 import React from "react";
 import {
@@ -16,6 +17,25 @@ export const LinearChart: React.FC = () => {
   const { transactions } = useAppSelector((state) => state.transactions);
 
   const data = transformTransactionsData(transactions);
+
+  const totalValue = data.reduce(
+    (prev, curr) => prev + curr.totalExpense + curr.totalIncome,
+    0
+  );
+
+  if (!totalValue) {
+    return (
+      <Stack
+        justifyContent="center"
+        alignItems="center"
+        sx={{ minHeight: "200px" }}
+      >
+        <Typography>
+          There is not data about your transactions for the previous week.
+        </Typography>
+      </Stack>
+    );
+  }
 
   return (
     <ResponsiveContainer width={"100%"} aspect={1}>
