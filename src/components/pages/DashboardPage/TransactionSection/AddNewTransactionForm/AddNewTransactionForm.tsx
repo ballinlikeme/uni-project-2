@@ -39,9 +39,16 @@ export const AddNewTransactionForm: React.FC = () => {
   const { accounts } = useAppSelector((state) => state.accounts);
   const { categories } = useAppSelector((state) => state.categories);
 
-  const { register, handleSubmit, reset, control, setValue } =
+  const { register, handleSubmit, control, reset } =
     useForm<TransactionValidationSchema>({
       resolver: zodResolver(transactionSchema),
+      defaultValues: {
+        amount: undefined,
+        categories: [],
+        date: "",
+        note: undefined,
+        recipient: "",
+      },
     });
 
   const handleTabChange = (
@@ -89,14 +96,13 @@ export const AddNewTransactionForm: React.FC = () => {
     dispatch(
       addNewTransaction({
         ...data,
+        date: String(data.date),
         categories: mapCategoryValues(data.categories),
         amount: transactionAmount,
         type: tabValue,
         id: uuidv4(),
       })
     );
-    setValue("categories", []);
-    setValue("recipient", "");
     reset();
   };
 
@@ -137,6 +143,7 @@ export const AddNewTransactionForm: React.FC = () => {
                       select
                       size="small"
                       label="Account"
+                      defaultValue=""
                     >
                       {accounts.map((account) => (
                         <MenuItem key={account.name} value={account.name}>
@@ -223,10 +230,12 @@ export const AddNewTransactionForm: React.FC = () => {
                       <DatePicker
                         {...rest}
                         sx={{ width: "100%" }}
-                        slotProps={{ textField: { size: "small" } }}
+                        slotProps={{
+                          textField: { size: "small", error: false },
+                        }}
                         onChange={(val) => {
                           if (val) {
-                            onChange(new Date(val));
+                            onChange(String(val));
                           }
                           return val;
                         }}
@@ -237,10 +246,7 @@ export const AddNewTransactionForm: React.FC = () => {
               </Stack>
             </Stack>
             <Stack direction="row" gap={1}>
-              <Stack flex="70%">
-                <TextField size="small" label="Note" />
-              </Stack>
-              <Stack flex="30%">
+              <Stack flex="100%">
                 <Button
                   type="submit"
                   variant="contained"

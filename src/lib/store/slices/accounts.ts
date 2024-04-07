@@ -27,6 +27,7 @@ export const accountsSlice = createSlice({
       if (index !== -1) {
         state.accounts[index] = action.payload;
       }
+      DataStorageService.saveData(state.accounts, StorageKeys.ACCOUNTS);
     },
 
     removeAccount: (state, action: PayloadAction<Account>) => {

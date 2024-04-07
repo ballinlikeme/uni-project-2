@@ -1,7 +1,7 @@
 import type { Category } from "./category";
 
 export enum TransactionType {
-  INCOME = "Incone",
+  INCOME = "Income",
   EXPENSE = "Expense",
 }
 

@@ -1,6 +1,7 @@
 import { Layout } from "components/common/Layout/Layout";
 import { DashboardPage } from "pages/DashboardPage";
 import { ReportsPage } from "pages/ReportsPage";
+import { TransactionsPage } from "pages/TransactionsPage";
 import React, { ReactNode } from "react";
 import { Route, Routes } from "react-router-dom";
 
@@ -29,6 +30,14 @@ const routes: AppRoute[] = [
     component: (
       <Layout>
         <ReportsPage />
+      </Layout>
+    ),
+  },
+  {
+    path: AppRoutes.TRANSACTIONS,
+    component: (
+      <Layout>
+        <TransactionsPage />
       </Layout>
     ),
   },
